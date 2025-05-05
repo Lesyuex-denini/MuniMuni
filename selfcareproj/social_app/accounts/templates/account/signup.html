@@ -1,0 +1,173 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GALING GALING - Sign Up</title>
+    <style>
+      :root {
+        --primary: #f38b8a;
+        --secondary: #f9f7e2;
+        --accent: #e4e1b5;
+        --bg: #fff8f5;
+        --font: "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: var(--font);
+        background: var(--bg);
+        color: var(--primary);
+      }
+
+      header {
+        padding: 2rem 4rem;
+        background-color: var(--secondary);
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+
+      .hero {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        padding: 2rem;
+      }
+
+      .welcome-back {
+        position: fixed;
+        top: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 2rem;
+        font-weight: bold;
+        color: var(--primary);
+        z-index: 1000;
+        animation: fadeIn 2s ease-out;
+      }
+
+      .signup-container {
+        display: flex;
+        justify-content: space-between;
+        background: var(--secondary);
+        padding: 3rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        width: 100%;
+      }
+
+      .signup-content {
+        width: 60%;
+      }
+
+      .signup-container h2 {
+        font-size: 2rem;
+        color: var(--primary);
+        margin-bottom: 1.5rem;
+        text-align: center;
+      }
+
+      .signup-form input {
+        width: 100%;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        border-radius: 8px;
+        border: 1px solid var(--primary);
+        font-size: 1rem;
+        background: #fff;
+      }
+
+      .signup-form button {
+        background: var(--primary);
+        color: white;
+        padding: 1rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        width: 100%;
+        font-size: 1.1rem;
+        transition: background-color 0.3s ease;
+      }
+
+      .signup-form button:hover {
+        background: #e27c75;
+      }
+
+      .login-logo {
+        width: 35%;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+      }
+
+      .login-logo img {
+        width: 100%;
+        max-width: 300px;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 2rem;
+        background: var(--primary);
+        color: white;
+        position: relative;
+      }
+
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+          transform: translateX(-50%) translateY(-30px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateX(-50%) translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">sana matapos na agad</div>
+    </header>
+
+    <section class="hero">
+      <div class="welcome-back">Sign Up</div>
+
+      <div class="signup-container">
+        <div class="signup-content">
+          <h2>Create Your Account</h2>
+          <form method="POST" class="signup-form">
+            {% csrf_token %} {{ form.as_p }}
+            <button type="submit">Sign Up</button>
+          </form>
+          <p style="text-align: center; margin-top: 1rem">
+            Already have an account?
+            <a href="{% url 'account_login' %}" style="color: var(--primary)"
+              >Log In</a
+            >
+          </p>
+        </div>
+
+        <div class="login-logo">
+          <img src="{% static 'css/forLoginSignUp.png' %}" alt="Logo" />
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <p>2025 Mental Health. All rights reserved.</p>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,374 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Articles | Project Websys</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <style>
+      :root {
+        --primary: #f38b8a; /* Soft pinkish tone */
+        --secondary: #f9f7e2; /* Light cream */
+        --accent: #e4e1b5; /* Soft yellow */
+        --bg: #fff8f5; /* Light beige background */
+        --font: "Segoe UI", sans-serif; /* Modern font */
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: var(--font);
+      }
+
+      body {
+        background-color: var(--bg);
+        color: #222;
+        line-height: 1.6;
+      }
+
+      .hamburger {
+        font-size: 2rem;
+        padding: 1rem;
+        cursor: pointer;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1001;
+        background: var(--primary);
+        color: white;
+        border-bottom-right-radius: 12px;
+      }
+
+      .sidebar {
+        width: 250px;
+        background: var(--secondary);
+        position: fixed;
+        top: 0;
+        left: -250px;
+        height: 100%;
+        padding-top: 60px;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        transition: 0.3s ease;
+        z-index: 1000;
+      }
+
+      .sidebar.active {
+        left: 0;
+      }
+
+      .sidebar nav ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .sidebar nav ul li {
+        margin: 1rem 0;
+      }
+
+      .sidebar nav ul li a {
+        text-decoration: none;
+        color: #444;
+        font-weight: bold;
+        padding: 0.8rem 2rem;
+        display: block;
+        transition: 0.2s;
+      }
+
+      .sidebar nav ul li a:hover {
+        background: var(--accent);
+        border-radius: 8px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: auto;
+        padding: 2rem;
+        padding-left: 3rem;
+      }
+
+      header {
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 2rem;
+        color: var(--primary);
+      }
+
+      .welcome {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--secondary);
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        margin-bottom: 3rem;
+      }
+
+      .welcome-text {
+        max-width: 55%;
+      }
+
+      .welcome-text h1 {
+        font-size: 2rem;
+        font-style: italic;
+        margin-bottom: 1rem;
+        color: #333;
+      }
+
+      .welcome-text p {
+        font-size: 1rem;
+        margin-bottom: 1.2rem;
+        color: #444;
+      }
+
+      .get-started-btn {
+        background-color: var(--primary);
+        color: white;
+        padding: 0.6rem 1.2rem;
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .get-started-btn:hover {
+        background-color: #e17b76; /* Slightly darker pink on hover */
+      }
+
+      .profile-image {
+        width: 250px;
+        height: 250px;
+        background: var(--accent);
+        border-radius: 20px;
+      }
+
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        font-weight: bold;
+        font-style: italic;
+        color: #444;
+      }
+
+      .section-header small {
+        font-size: 0.9rem;
+        color: var(--primary);
+        cursor: pointer;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+      }
+
+      .card {
+        background: white;
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      }
+
+      .card-placeholder {
+        width: 100%;
+        height: 120px;
+        background: var(--accent);
+        border-radius: 10px;
+        margin-bottom: 0.8rem;
+      }
+
+      .card-title {
+        font-weight: bold;
+        font-size: 1rem;
+        margin-bottom: 0.4rem;
+      }
+
+      .card-desc {
+        font-size: 0.9rem;
+        color: #555;
+        margin-bottom: 0.6rem;
+      }
+
+      .card-btn {
+        background: var(--primary);
+        color: white;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+        font-weight: bold;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .emotion-check {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .emotion-check h2 {
+        font-style: italic;
+        margin-bottom: 1rem;
+        font-size: 1.4rem;
+        color: #333;
+      }
+
+      .select-btn {
+        background: var(--primary);
+        color: white;
+        padding: 0.6rem 2rem;
+        margin: 0.5rem 0;
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+
+      .publish-btn {
+        margin-top: 1rem;
+        background: var(--primary);
+        color: white;
+        padding: 0.6rem 2rem;
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .articles .cards {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .logout-btn {
+        background-color: #f44336;
+        /* Red color to signify danger or logout */
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        width: 100%;
+        text-align: center;
+      }
+
+      .logout-btn:hover {
+        background-color: #e53935;
+        /* Darker red when hovered */
+        transform: scale(1.05);
+        /* Slightly enlarge the button for effect */
+      }
+
+      .logout-btn:focus {
+        outline: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Sidebar (for navigation) -->
+    <div class="sidebar" id="sidebar">
+      <nav>
+        <ul>
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'recommendations' %}">Recommendations</a></li>
+          <li><a href="{% url 'articles' %}">Articles</a></li>
+          <li><a href="{% url 'profile' %}">Profile</a></li>
+          <form action="{% url 'logout' %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">Logout</button>
+          </form>
+        </ul>
+
+        <ul>
+          {% if not user.is_authenticated %}
+          <li><a href="{% url 'account_login' %}">Login</a></li>
+          <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+          {% else %} {% endif %}
+        </ul>
+      </nav>
+    </div>
+
+    <div class="hamburger" onclick="toggleSidebar()">☰</div>
+
+    <div class="container">
+      <header>Articles</header>
+
+      <!-- Articles Section -->
+      <section class="articles">
+        <div class="section-header">Latest Articles</div>
+
+        <!-- Card 1 -->
+        <div class="card">
+          <img src="" alt="Article Image 1" />
+          <div class="card-content">
+            <div class="card-title">Coping with Anxiety in Daily Life</div>
+            <div class="card-desc">
+              Learn strategies to cope with anxiety in daily life, including
+              mindfulness and relaxation techniques.
+            </div>
+            <a href="" class="card-btn">Read</a>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card">
+          <img src="" alt="Article Image 2" />
+          <div class="card-content">
+            <div class="card-title">10 Breathing Techniques for Calm</div>
+            <div class="card-desc">
+              Explore breathing exercises that help calm your nerves and reduce
+              stress throughout your day.
+            </div>
+            <a href="" class="card-btn">Read</a>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card">
+          <img src="" alt="Article Image 3" />
+          <div class="card-content">
+            <div class="card-title">How to Stay Grounded and Present</div>
+            <div class="card-desc">
+              Discover methods to stay grounded in the present moment and
+              improve your mental clarity.
+            </div>
+            <a class="card-btn">Read</a>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card">
+          <img src="" alt="Article Image 4" />
+          <div class="card-content">
+            <div class="card-title">Best Foods to Support Your Mood</div>
+            <div class="card-desc">
+              Find out which foods can positively affect your mood and support
+              emotional well-being.
+            </div>
+            <a class="card-btn">Read</a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="footer">
+      <p>&copy; 2025 Project Websys. All rights reserved.</p>
+    </div>
+
+    <script>
+      function toggleSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        sidebar.classList.toggle("active");
+      }
+    </script>
+  </body>
+</html>

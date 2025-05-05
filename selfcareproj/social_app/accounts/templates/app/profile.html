@@ -1,0 +1,219 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+
+    <style>
+      :root {
+        --primary: #f38b8a;
+        --secondary: #fff0e4;
+        --accent: #fcd9d9;
+        --highlight: #fef9e7;
+        --text-dark: #333;
+        --text-light: #555;
+        --font: "Segoe UI", sans-serif;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: var(--font);
+      }
+
+      body {
+        background-color: var(--highlight);
+        color: var(--text-dark);
+      }
+
+      .hamburger {
+        font-size: 1.8rem;
+        padding: 1rem;
+        background-color: var(--primary);
+        color: white;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 10;
+        border-bottom-right-radius: 1rem;
+        cursor: pointer;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: -250px;
+        width: 230px;
+        height: 100%;
+        background-color: var(--secondary);
+        padding-top: 60px;
+        transition: all 0.3s ease;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+        z-index: 9;
+      }
+
+      .sidebar.active {
+        left: 0;
+      }
+
+      .sidebar nav ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .sidebar nav ul li a {
+        display: block;
+        padding: 1rem 1.5rem;
+        text-decoration: none;
+        color: var(--text-dark);
+        font-weight: 500;
+        border-left: 5px solid transparent;
+        transition: 0.3s;
+      }
+
+      .sidebar nav ul li a:hover,
+      .sidebar nav ul li a.active {
+        background-color: var(--accent);
+        border-left: 5px solid var(--primary);
+        border-radius: 0 10px 10px 0;
+      }
+
+      .profile-container {
+        margin-left: 270px;
+        padding: 2rem;
+        min-height: 100vh;
+      }
+
+      .profile-title {
+        font-size: 2.4rem;
+        color: var(--primary);
+        margin-bottom: 1.5rem;
+      }
+
+      .profile-card {
+        display: flex;
+        align-items: center;
+        background-color: var(--secondary);
+        padding: 2rem;
+        border-radius: 1.2rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+      }
+
+      .profile-pic {
+        width: 130px;
+        height: 130px;
+        background-color: var(--accent);
+        border-radius: 50%;
+        margin-right: 2rem;
+        background-image: url("https://via.placeholder.com/130");
+        background-size: cover;
+        background-position: center;
+      }
+
+      .profile-info h2 {
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .profile-info p {
+        margin: 0.3rem 0;
+        color: var(--text-light);
+      }
+
+      .edit-btn {
+        margin-top: 1rem;
+        padding: 0.6rem 1.4rem;
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .edit-btn:hover {
+        background-color: #e06b6a;
+      }
+
+      .activity-log {
+        background-color: #fff;
+        padding: 1.5rem 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .activity-log h2 {
+        margin-bottom: 1rem;
+        color: var(--primary);
+      }
+
+      .activity-log ul {
+        list-style: none;
+        padding-left: 0;
+      }
+
+      .activity-log li {
+        padding: 0.6rem 0;
+        color: var(--text-light);
+        border-bottom: 1px dashed #eee;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sidebar" id="sidebar">
+      <nav>
+        <ul>
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'recommendations' %}">Recommendations</a></li>
+          <li><a href="{% url 'articles' %}">Articles</a></li>
+          <li><a href="{% url 'profile' %}" class="active">Profile</a></li>
+          <li>
+            <li>
+  <a href="{% url 'logout' %}" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
+</li>
+
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="hamburger" onclick="toggleSidebar()">☰</div>
+
+    <main class="profile-container">
+      <h1 class="profile-title">Your Profile</h1>
+
+      <section class="profile-card">
+        <div class="profile-pic"></div>
+        <div class="profile-info">
+          <h2>{{ request.user.first_name }}</h2>
+          <p><strong>Email:</strong> {{ request.user.email }}</p>
+          <p>
+            <strong>Joined:</strong> {{ request.user.date_joined|date:"F Y" }}
+          </p>
+          <p><strong>Status:</strong> Active</p>
+          <button class="edit-btn">Edit Profile</button>
+        </div>
+      </section>
+
+      <section class="activity-log">
+        <h2>📌 Recent Activity</h2>
+        <ul>
+          <li>Published a recommendation - Apr 10</li>
+          <li>Read article: "How to Stay Grounded" - Apr 9</li>
+          <li>Tracked mood: "Tired" - Apr 8</li>
+        </ul>
+      </section>
+    </main>
+
+    <script>
+      function toggleSidebar() {
+        document.getElementById("sidebar").classList.toggle("active");
+      }
+    </script>
+  </body>
+</html>

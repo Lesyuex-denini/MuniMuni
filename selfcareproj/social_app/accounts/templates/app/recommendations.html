@@ -1,0 +1,281 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Self-Care Platform</title>
+    <style>
+      :root {
+        --primary: #f38b8a;
+        --secondary: #f9f7e2;
+        --accent: #e4e1b5;
+        --bg: #fff8f5;
+        --font: "Segoe UI", sans-serif;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: var(--font);
+        background-color: var(--bg);
+        color: var(--primary);
+        padding: 2rem;
+      }
+
+      .hamburger {
+        font-size: 2rem;
+        padding: 1rem;
+        cursor: pointer;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1001;
+        background: var(--primary);
+        color: white;
+        border-bottom-right-radius: 12px;
+      }
+
+      .sidebar {
+        width: 250px;
+        background: var(--secondary);
+        position: fixed;
+        top: 0;
+        left: -250px;
+        height: 100%;
+        padding-top: 60px;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        transition: 0.3s ease;
+        z-index: 1000;
+      }
+
+      .sidebar.active {
+        left: 0;
+      }
+
+      .sidebar nav ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .sidebar nav ul li {
+        margin: 1rem 0;
+      }
+
+      .sidebar nav ul li a {
+        text-decoration: none;
+        color: #444;
+        font-weight: bold;
+        padding: 0.8rem 2rem;
+        display: block;
+        transition: 0.2s;
+      }
+
+      .sidebar nav ul li a:hover {
+        background: var(--accent);
+        border-radius: 8px;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: var(--secondary);
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+        padding: 2.5rem;
+        margin-left: 250px; /* Offset for sidebar */
+        transition: margin-left 0.3s ease;
+      }
+
+      .headline {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .headline .name {
+        color: var(--primary);
+      }
+
+      .headline .question {
+        color: var(--accent);
+      }
+
+      .subtext {
+        color: var(--primary);
+        font-size: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .prompt-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .card {
+        background-color: var(--secondary);
+        padding: 1.2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+        cursor: pointer;
+        transition: all 0.25s ease;
+        border: 1px solid #e5e7eb;
+      }
+
+      .card:hover {
+        transform: translateY(-6px);
+        border-color: var(--accent);
+      }
+
+      .card h3 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.4rem;
+        color: var(--primary);
+      }
+
+      .card p {
+        font-size: 0.95rem;
+        color: var(--primary);
+      }
+
+      .input-section {
+        background-color: var(--bg);
+        padding: 1.5rem;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+      }
+
+      textarea {
+        width: 100%;
+        height: 120px;
+        padding: 1rem;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        resize: vertical;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        font-family: var(--font);
+      }
+
+      .actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .action-btn {
+        background: none;
+        border: none;
+        color: var(--accent);
+        font-weight: 500;
+        cursor: pointer;
+        padding: 0.4rem 0.8rem;
+        transition: color 0.2s;
+      }
+
+      .action-btn:hover {
+        color: var(--primary);
+      }
+
+      .send-btn {
+        background-color: var(--primary);
+        color: #fff;
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        border: none;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: background 0.2s ease;
+      }
+
+      .send-btn:hover {
+        background-color: #f38b8a;
+      }
+
+      @media (max-width: 600px) {
+        .actions {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .send-btn {
+          width: 100%;
+        }
+
+        .container {
+          margin-left: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hamburger" id="hamburger">&#9776;</div>
+
+    <div class="sidebar" id="sidebar">
+      <nav>
+        <ul>
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'recommendations' %}">Recommendations</a></li>
+          <li><a href="{% url 'articles' %}">Articles</a></li>
+          <li><a href="{% url 'profile' %}" class="active">Profile</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="container">
+      <h1 class="headline">
+        Hi there, <span class="name">{{ user.first_name }}</span><br />
+        How are you feeling today?
+        <span class="question">Let's work on your well-being.</span>
+      </h1>
+      <p class="subtext">
+        Choose one of the suggestions below to get started or enter your own
+        self-care goal.
+      </p>
+
+      <div class="prompt-cards">
+        <div class="card">
+          <h3>Mindful Breathing</h3>
+          <p>Take a moment for a calming breathing exercise.</p>
+        </div>
+        <div class="card">
+          <h3>Self-Care Checklist</h3>
+          <p>Create your personalized daily self-care routine.</p>
+        </div>
+        <div class="card">
+          <h3>Journal Your Thoughts</h3>
+          <p>Express your feelings to clear your mind.</p>
+        </div>
+        <div class="card">
+          <h3>Motivational Quote</h3>
+          <p>Get inspired with a positive quote.</p>
+        </div>
+      </div>
+
+      <div class="input-section">
+        <textarea
+          placeholder="How can we help you? share your thoughts?"
+        ></textarea>
+          <button class="send-btn">SUBMIT</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const hamburger = document.getElementById("hamburger");
+      const sidebar = document.getElementById("sidebar");
+
+      hamburger.addEventListener("click", () => {
+        sidebar.classList.toggle("active");
+      });
+    </script>
+  </body>
+</html>
