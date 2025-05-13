@@ -18,6 +18,14 @@ body {
     color: #222;
 }
 
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 2rem;
+    padding-left: 3rem;
+}
+
+
 .hamburger {
     font-size: 2rem;
     padding: 1rem;
@@ -71,169 +79,8 @@ body {
     border-radius: 8px;
 }
 
-.container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 2rem;
-    padding-left: 3rem;
-}
-
-header {
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 2rem;
-    color: var(--primary);
-}
-
-.welcome {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: var(--secondary);
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    margin-bottom: 3rem;
-}
-
-.welcome-text {
-    max-width: 55%;
-}
-
-.welcome-text h1 {
-    font-size: 2rem;
-    font-style: italic;
-    margin-bottom: 1rem;
-    color: #333;
-}
-
-.welcome-text p {
-    font-size: 1rem;
-    margin-bottom: 1.2rem;
-    color: #444;
-}
-
-.get-started-btn {
-    background-color: var(--primary);
-    color: white;
-    padding: 0.6rem 1.2rem;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.profile-image {
-    width: 250px;
-    height: 250px;
-    background: var(--accent);
-    border-radius: 20px;
-}
-
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    font-weight: bold;
-    font-style: italic;
-    color: #444;
-}
-
-.section-header small {
-    font-size: 0.9rem;
-    color: var(--primary);
-    cursor: pointer;
-}
-
-.cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    margin-bottom: 3rem;
-}
-
-.card {
-    background: white;
-    padding: 1rem;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
-
-.card-placeholder {
-    width: 100%;
-    height: 120px;
-    background: var(--accent);
-    border-radius: 10px;
-    margin-bottom: 0.8rem;
-}
-
-.card-title {
-    font-weight: bold;
-    font-size: 1rem;
-    margin-bottom: 0.4rem;
-}
-
-.card-desc {
-    font-size: 0.9rem;
-    color: #555;
-    margin-bottom: 0.6rem;
-}
-
-.card-btn {
-    background: var(--primary);
-    color: white;
-    padding: 0.4rem 0.8rem;
-    font-size: 0.9rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.emotion-check {
-    text-align: center;
-    margin-bottom: 3rem;
-}
-
-.emotion-check h2 {
-    font-style: italic;
-    margin-bottom: 1rem;
-    font-size: 1.4rem;
-    color: #333;
-}
-
-.select-btn {
-    background: var(--primary);
-    color: white;
-    padding: 0.6rem 2rem;
-    margin: 0.5rem 0;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    font-size: 1rem;
-    cursor: pointer;
-}
-
-.publish-btn {
-    margin-top: 1rem;
-    background: var(--primary);
-    color: white;
-    padding: 0.6rem 2rem;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.articles .cards {
-    grid-template-columns: repeat(4, 1fr);
-}
-
 .logout-btn {
-    background-color: #f44336;
-    /* Red color to signify danger or logout */
+    background-color: #f38b8a;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -247,9 +94,7 @@ header {
 
 .logout-btn:hover {
     background-color: #e53935;
-    /* Darker red when hovered */
     transform: scale(1.05);
-    /* Slightly enlarge the button for effect */
 }
 
 .logout-btn:focus {

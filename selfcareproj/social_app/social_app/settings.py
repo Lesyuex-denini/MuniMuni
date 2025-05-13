@@ -29,8 +29,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.google',
-    'accounts',  # Your custom accounts app
-    
+    'accounts', 
+    'django.contrib.postgres',  
 ]
 
 MIDDLEWARE = [
@@ -69,11 +69,15 @@ WSGI_APPLICATION = 'social_app.wsgi.application'
 
 # Database configuration
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('DB_NAME'),
+            'USER': os.getenv('DB_USER'),
+            'PASSWORD': os.getenv('DB_PASSWORD'),
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
     }
-}
 
 # GitHub and Google OAuth configuration
 SOCIALACCOUNT_PROVIDERS = {
@@ -105,7 +109,7 @@ AUTHENTICATION_BACKENDS = (
 
 # Password validation settings (still active but does not relate to password reset)
 AUTH_PASSWORD_VALIDATORS = [
-  
+
 ]
 
 # Language and timezone settings
@@ -117,15 +121,21 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
 
-# Login settings
-LOGIN_REDIRECT_URL = '/dashboard/'
-ACCOUNT_EMAIL_REQUIRED = True
+# Allauth settings for redirection
+LOGIN_REDIRECT_URL = '/'  # Global redirect after login (fallback)
+ACCOUNT_AUTHENTICATED_REDIRECT_URL = '/'  # Redirect after login for authenticated users
+ACCOUNT_PROFILE_URL = '/profile/'
+
+# Update deprecated settings
+ACCOUNT_LOGIN_METHODS = {'email'}
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
 ACCOUNT_EMAIL_VERIFICATION = 'none'  # Disable email verification for registration
-ACCOUNT_AUTHENTICATED_REDIRECT_URL = '/'  # Redirect after login
 
+# Explicitly set the signup redirect URL
+ACCOUNT_SIGNUP_REDIRECT_URL = '/profile/'
 
-#Log OUT
-LOGOUT_REDIRECT_URL = 'dashboard'
+# Logout setting
+LOGOUT_REDIRECT_URL = 'login'  # Redirect to your custom login page after logout
 
 # Email settings (for testing only, using console email backend)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -133,5 +143,20 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 
-
+LLOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'signup_debug.log',
+        },
+    },
+    'root': {
+        'handlers': ['file'],
+        'level': 'INFO',
+    },
+}
