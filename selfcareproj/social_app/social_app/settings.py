@@ -15,7 +15,10 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-!4e)^)+oko$%b(oyl-a
 DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
 
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+if DEBUG:
+    ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+else:
+    ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(' ')
 
 # Application definition
 INSTALLED_APPS = [
@@ -71,6 +74,7 @@ WSGI_APPLICATION = 'social_app.wsgi.application'
 
 # Database configuration
 if DEBUG:
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
