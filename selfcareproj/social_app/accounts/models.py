@@ -7,11 +7,11 @@ from django.dispatch import receiver
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     joined = models.DateField(auto_now_add=True)
-    profile_pic = models.ImageField(upload_to="profile_pics/", default="default.jpg")
-    status = models.CharField(max_length=20, default="Active")
-    timezone = models.CharField(max_length=50, blank=True, null=True, default="UTC")
+    profile_pic = models.ImageField(upload_to='profile_pics/', default='default.jpg')
+    status = models.CharField(max_length=20, default='Active')
+    timezone = models.CharField(max_length=50, blank=True, null=True, default='UTC')
     preferred_self_care_hours = models.CharField(max_length=100, blank=True, null=True)
-    interests = models.ManyToManyField("Interest", blank=True)
+    interests = models.ManyToManyField('Interest', blank=True)
     notification_preferences = models.TextField(blank=True, null=True)
 
     def __str__(self):
@@ -27,11 +27,11 @@ class Interest(models.Model):
 
 class Recommendation(models.Model):
     CATEGORY_CHOICES = [
-        ("all", "All"),
-        ("stress_relief", "Stress Relief"),
-        ("sleep", "Sleep"),
-        ("focus", "Focus"),
-        # Add more categories as needed
+        ('all', 'All'),
+        ('stress_relief', 'Stress Relief'),
+        ('sleep', 'Sleep'),
+        ('focus', 'Focus'),
+        
     ]
     title = models.CharField(max_length=255)
     description = models.TextField()
@@ -39,7 +39,7 @@ class Recommendation(models.Model):
     category = models.CharField(
         max_length=20,
         choices=CATEGORY_CHOICES,
-        default="all",
+        default='all',
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -56,7 +56,7 @@ class UserRecommendation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ("user", "recommendation")
+        unique_together = ('user', 'recommendation')
 
     def __str__(self):
         return f"{self.user.username} - {self.recommendation.title}"
@@ -71,7 +71,7 @@ class PlannerItem(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ("user", "recommendation", "scheduled_date", "scheduled_time")
+        unique_together = ('user', 'recommendation', 'scheduled_date', 'scheduled_time')
 
     def __str__(self):
         return f"{self.user.username} - {self.recommendation.title} ({self.scheduled_date})"
@@ -79,14 +79,14 @@ class PlannerItem(models.Model):
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
-    print("create_user_profile signal triggered!")  # Added print statement
+    print("create_user_profile signal triggered!")  
     if created:
         Profile.objects.create(user=instance)
 
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
-    print("save_user_profile signal triggered!")  # Added print statement
+    print("save_user_profile signal triggered!") 
     try:
         instance.profile.save()
     except Profile.DoesNotExist:

@@ -1,7 +1,6 @@
 from pathlib import Path
-import environ
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv()
@@ -14,7 +13,8 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-!4e)^)+oko$%b(oyl-a
 
 DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # Application definition
 INSTALLED_APPS = [
@@ -42,6 +42,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  
 ]
 
 ROOT_URLCONF = 'social_app.urls'
@@ -50,8 +51,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR / 'accounts' / 'templates',  # Custom templates
-            str(BASE_DIR.joinpath('templates')),  # Default templates
+            BASE_DIR / 'accounts' / 'templates',  
+            str(BASE_DIR.joinpath('templates')),  
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -129,10 +130,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'accounts/static')]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Allauth settings for redirection (these were already present but kept for clarity)
-LOGIN_REDIRECT_URL = '/'  # Global redirect after login (fallback)
-LOGOUT_REDIRECT_URL = 'login'  # Redirect to your custom login page after logout
+
+LOGIN_REDIRECT_URL = '/' 
+LOGOUT_REDIRECT_URL = 'login' 
 
 # Email settings (for testing only, using console email backend)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -157,3 +160,5 @@ LLOGGING = {
         'level': 'INFO',
     },
 }
+
+SITE_ID = 1
